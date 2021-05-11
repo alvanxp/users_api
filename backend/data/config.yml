@@ -1,0 +1,14 @@
+database:
+  dbname: "users"
+  username: "root"
+  host: "db"
+  port: "3306"
+  max_lifetime: 7200
+  max_open_conns: 150
+  max_idle_conns: 50
+
+server:
+  port: "8000"
+  secret: "jdnfksdmfksda"
+  #release | debug
+  mode: "release"
