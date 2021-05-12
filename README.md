@@ -20,4 +20,4 @@ go get -u github.com/swaggo/swag/cmd/swag
 swag init --dir cmd/api --parseDependency --output docs
 ```
 
-Run and go to **http://localhost:8000/docs/index.html**
+Run and go to **http://localhost:80/docs/index.html**
