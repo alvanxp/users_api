@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"time"
+	models "users_api/internal/core/domain/models/users"
 	"users_api/internal/pkg/config"
-	"users_api/internal/pkg/models/users"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -55,7 +55,7 @@ func SetupDB() {
 
 // Auto migrate project models
 func migration() {
-	DB.AutoMigrate(&users.User{})
+	DB.AutoMigrate(&models.User{})
 
 }
 

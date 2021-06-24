@@ -1,8 +1,8 @@
-package users
+package models
 
 import (
 	"time"
-	"users_api/internal/pkg/models"
+	"users_api/internal/core/domain/models"
 
 	"gorm.io/gorm"
 )

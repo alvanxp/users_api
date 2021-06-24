@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"users_api/internal/api/controllers"
 	"users_api/internal/api/middlewares"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +13,7 @@ import (
 
 func Setup() *gin.Engine {
 	app := gin.New()
-
+	dependencies := NewDependencies()
 	// Logging to a file.
 	f, _ := os.Create("log/api.log")
 	gin.DisableConsoleColor()
@@ -44,14 +43,14 @@ func Setup() *gin.Engine {
 
 	secure_api.Use(middlewares.AuthRequired())
 	// ================== User Routes
-	secure_api.GET("/users", controllers.GetUsers)
-	secure_api.GET("/users/:id", controllers.GetUserById)
+	secure_api.GET("/users", dependencies.UserController.GetUsers)
+	secure_api.GET("/users/:id", dependencies.UserController.GetUserById)
 
 	public_api := app.Group("/api")
 
 	// ================== Login Routes
-	public_api.POST("/login", controllers.Login)
-	public_api.POST("/login/register", controllers.RegisterUser)
+	public_api.POST("/login", dependencies.AuthController.Login)
+	public_api.POST("/login/register", dependencies.AuthController.RegisterUser)
 
 	return app
 }

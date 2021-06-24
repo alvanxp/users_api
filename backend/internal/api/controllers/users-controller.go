@@ -4,12 +4,20 @@ import (
 	"errors"
 	"log"
 	"net/http"
-	models "users_api/internal/pkg/models/users"
-	"users_api/internal/pkg/persistence"
+	models "users_api/internal/core/domain/models/users"
+	"users_api/internal/core/interfaces"
 	http_err "users_api/pkg/http-err"
 
 	"github.com/gin-gonic/gin"
 )
+
+type UserController struct {
+	userService interfaces.UserService
+}
+
+func NewUserController(service interfaces.UserService)*UserController{
+	return &UserController{service}
+}
 
 // GetUserById godoc
 // @Summary Retrieves user based on given ID
@@ -19,10 +27,9 @@ import (
 // @Success 200 {object} users.User
 // @Router /api/users/{id} [get]
 // @Security ApiKeyAuth
-func GetUserById(c *gin.Context) {
-	s := persistence.GetUserRepository()
+func (u *UserController) GetUserById(c *gin.Context) {
 	id := c.Param("id")
-	if user, err := s.Get(id); err != nil {
+	if user, err := u.userService.Get(id); err != nil {
 		http_err.NewError(c, http.StatusNotFound, errors.New("user not found"))
 		log.Println(err)
 	} else {
@@ -40,11 +47,10 @@ func GetUserById(c *gin.Context) {
 // @Success 200 {array} []users.User
 // @Router /api/users [get]
 // @Security ApiKeyAuth
-func GetUsers(c *gin.Context) {
-	s := persistence.GetUserRepository()
+func (u *UserController) GetUsers(c *gin.Context) {
 	var q models.User
 	_ = c.Bind(&q)
-	if users, err := s.Query(&q); err != nil {
+	if users, err := u.userService.GetUsers(q.Username, q.Firstname, q.Lastname); err != nil {
 		http_err.NewError(c, http.StatusNotFound, errors.New("users not found"))
 		log.Println(err)
 	} else {
