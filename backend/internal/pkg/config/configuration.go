@@ -6,13 +6,16 @@ import (
 	"github.com/spf13/viper"
 )
 
+//Config instance of Configuration file
 var Config *Configuration
 
+//Configuration class to map config file
 type Configuration struct {
 	Server   ServerConfiguration
 	Database DatabaseConfiguration
 }
 
+//DatabaseConfiguration class to map db configuration
 type DatabaseConfiguration struct {
 	Dbname       string
 	Username     string
@@ -23,13 +26,14 @@ type DatabaseConfiguration struct {
 	MaxIdleConns int
 }
 
+//ServerConfiguration class to map server configuration
 type ServerConfiguration struct {
 	Port   string
 	Secret string
 	Mode   string
 }
 
-// SetupDB initialize configuration
+//Setup initialize configuration
 func Setup(configPath string) {
 	var configuration *Configuration
 
