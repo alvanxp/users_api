@@ -1,8 +1,8 @@
 database:
   dbname: "users"
   username: "root"
-  host: "db"
-  port: "3306"
+  host: "localhost"
+  port: "8083"
   max_lifetime: 7200
   max_open_conns: 150
   max_idle_conns: 50
