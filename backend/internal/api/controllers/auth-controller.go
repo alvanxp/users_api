@@ -30,10 +30,10 @@ func NewAuthController(authService interfaces.AuthService) *AuthController {
 func (a *AuthController) Login(c *gin.Context) {
 	var loginInput dtos.LoginInput
 	_ = c.BindJSON(&loginInput)
-	if token, err:= a.authService.ValidateUser(loginInput); err!= nil{
+	if token, err := a.authService.ValidateUser(loginInput); err != nil {
 		http_err.NewError(c, http.StatusForbidden, errors.New("user and password not match"))
 		return
-	}else{
+	} else {
 		c.JSON(http.StatusOK, token)
 	}
 }
@@ -49,11 +49,12 @@ func (a *AuthController) Login(c *gin.Context) {
 func (a *AuthController) RegisterUser(c *gin.Context) {
 	var userInput dtos.UserInput
 	_ = c.BindJSON(&userInput)
-	if err := a.authService.RegisterUser(userInput); err != nil{
+	token, err := a.authService.RegisterUser(userInput)
+	if err != nil {
 		http_err.NewError(c, http.StatusBadRequest, err)
 		log.Println(err)
-	}else {
-		c.Status(http.StatusCreated)
+	} else {
+		c.JSON(http.StatusCreated, token)
 	}
 
 }

@@ -2,10 +2,11 @@ package db
 
 import (
 	"fmt"
-	"io/ioutil"
 	"time"
 	models "users_api/internal/core/domain/models/users"
 	"users_api/internal/pkg/config"
+
+	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -13,10 +14,12 @@ import (
 )
 
 var (
+	// DB is the reference to the gorm.DB instance.
 	DB  *gorm.DB
 	err error
 )
 
+// Database is a wrapper around gorm.DB to embed helper methods.
 type Database struct {
 	*gorm.DB
 }
@@ -32,13 +35,13 @@ func SetupDB() {
 	host := configuration.Database.Host
 	port := configuration.Database.Port
 
-	bin, err := ioutil.ReadFile("/run/secrets/db-password")
+	bin, err := os.ReadFile("/run/secrets/db-password")
 	if err != nil {
 		fmt.Println("db err: ", err)
 	}
 
-	conn_string := username + ":" + string(bin) + "@tcp(" + host + ":" + port + ")/" + database + "?charset=utf8&parseTime=True&loc=Local"
-	db, err = gorm.Open(mysql.Open(conn_string), &gorm.Config{})
+	connString := username + ":" + string(bin) + "@tcp(" + host + ":" + port + ")/" + database + "?charset=utf8&parseTime=True&loc=Local"
+	db, err = gorm.Open(mysql.Open(connString), &gorm.Config{})
 	if err != nil {
 		fmt.Println("db err: ", err)
 	}
@@ -59,6 +62,7 @@ func migration() {
 
 }
 
+// GetDB helps you to get a connection
 func GetDB() *gorm.DB {
 	return DB
 }
