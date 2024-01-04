@@ -35,7 +35,15 @@ func SetupDB() {
 	host := configuration.Database.Host
 	port := configuration.Database.Port
 
-	bin, err := os.ReadFile("/run/secrets/db-password")
+	var passwordFile string
+
+	if configuration.Server.Mode == "debug" { // assuming 'debug' is a boolean variable indicating whether you're in debug mode or not
+		passwordFile = "../db/password.txt"
+	} else {
+		passwordFile = "/run/secrets/db-password"
+	}
+
+	bin, err := os.ReadFile(passwordFile)
 	if err != nil {
 		fmt.Println("db err: ", err)
 	}

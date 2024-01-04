@@ -16,6 +16,7 @@ func setConfiguration(configPath string) {
 	gin.SetMode(config.GetConfig().Server.Mode)
 }
 
+// Run starts the API service.
 func Run(configPath string) {
 	if configPath == "" {
 		configPath = "data/config.yml"

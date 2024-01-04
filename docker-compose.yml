@@ -25,6 +25,9 @@ services:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
     expose:
       - 3306
+    # for debugging
+    # ports:
+    #   - 3306:3306
   proxy:
     build: proxy
     ports:
