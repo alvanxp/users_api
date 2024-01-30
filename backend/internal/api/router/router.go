@@ -17,7 +17,9 @@ func Setup() *gin.Engine {
 	// Logging to a file.
 	f, _ := os.Create("log/api.log")
 	gin.DisableConsoleColor()
-	gin.DefaultWriter = io.MultiWriter(f)
+	//gin.DefaultWriter = io.MultiWriter(f)
+	//log in console
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
 	// Middlewares
 	app.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {

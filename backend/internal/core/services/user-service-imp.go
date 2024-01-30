@@ -20,9 +20,15 @@ func (u userServiceImp) GetUsers(username string, name string, lastname string) 
 	return users, err
 }
 
+// get all users
+func (u userServiceImp) GetAll() (*[]models.User, error) {
+	users, err := u.userRepository.All()
+	return users, err
+}
+
+
 func NewUserService(repository interfaces.UserRepository) *userServiceImp {
 	return &userServiceImp{
 		userRepository: repository,
 	}
 }
-

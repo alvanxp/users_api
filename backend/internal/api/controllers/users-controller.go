@@ -4,18 +4,19 @@ import (
 	"errors"
 	"log"
 	"net/http"
-	models "users_api/internal/core/domain/models/users"
 	"users_api/internal/core/interfaces"
 	http_err "users_api/pkg/http-err"
 
 	"github.com/gin-gonic/gin"
 )
 
+// UserController represents the http handler for user
 type UserController struct {
 	userService interfaces.UserService
 }
 
-func NewUserController(service interfaces.UserService)*UserController{
+// NewUserController creates a new user controller
+func NewUserController(service interfaces.UserService) *UserController {
 	return &UserController{service}
 }
 
@@ -48,12 +49,17 @@ func (u *UserController) GetUserById(c *gin.Context) {
 // @Router /api/users [get]
 // @Security ApiKeyAuth
 func (u *UserController) GetUsers(c *gin.Context) {
-	var q models.User
-	_ = c.Bind(&q)
-	if users, err := u.userService.GetUsers(q.Username, q.Firstname, q.Lastname); err != nil {
+	if users, err := u.userService.GetAll(); err != nil {
 		http_err.NewError(c, http.StatusNotFound, errors.New("users not found"))
 		log.Println(err)
 	} else {
 		c.JSON(http.StatusOK, users)
 	}
+	// }
+	// if users, err := u.userService.GetUsers(q.Username, q.Firstname, q.Lastname); err != nil {
+	// 	http_err.NewError(c, http.StatusNotFound, errors.New("users not found"))
+	// 	log.Println(err)
+	// } else {
+	// 	c.JSON(http.StatusOK, users)
+	//}
 }
